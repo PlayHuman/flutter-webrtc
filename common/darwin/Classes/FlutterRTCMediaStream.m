@@ -443,6 +443,11 @@ typedef void (^NavigatorUserMediaSuccessCallback)(RTCMediaStream* mediaStream);
                                         format:selectedFormat
                                            fps:selectedFps
                              completionHandler:^(NSError* error) {
+                                if (self.videoCapturer.captureSession.connections.count > 0) {
+                                    AVCaptureConnection *connection = self.videoCapturer.captureSession.connections.firstObject;
+                                    connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
+                                    NSLog(@"Stabilization mode set: %d", [connection activeVideoStabilizationMode]);
+                                }
                                if (error) {
                                  NSLog(@"Start capture error: %@", [error localizedDescription]);
                                }
